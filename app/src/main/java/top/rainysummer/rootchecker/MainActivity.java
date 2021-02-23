@@ -1,6 +1,7 @@
 package top.rainysummer.rootchecker;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,23 +33,34 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageResource(R.drawable.yes);
         }
 
-        TextView textView = (TextView) findViewById(R.id.textView);
-        String strRoot = "", strXposed = "", strEmulator = "";
+        TextView txtRoot = (TextView) findViewById(R.id.txtRoot);
+        TextView txtXposed = (TextView) findViewById(R.id.txtXposed);
+        TextView txtEmulator = (TextView) findViewById(R.id.txtEmulator);
+        String strRoot, strXposed, strEmulator;
         if (isRoot) {
-            strRoot = "\u274E Root: Rooted";
+            strRoot = "\u274E <b><tt>Root</tt></b>: <font color=\"#FF4444\">Rooted</font>";
         } else {
-            strRoot = "\u2705 Root: Not Rooted";
+            strRoot = "\u2705 <b><tt>Root</tt></b>: <font color=\"#99CC00\">Not Rooted</font>";
         }
         if (isXposed) {
-            strXposed = "\u274E Xposed: Xposed Detected";
+            strXposed = "\u274E <b><tt>Xposed</tt></b>: <font color=\"#FF4444\">Xposed Detected</font>";
         } else {
-            strXposed = "\u2705 Xposed: Xposed Not Detected";
+            strXposed = "\u2705 <b><tt>Xposed</tt></b>: <font color=\"#99CC00\">Xposed Not Detected</font>";
         }
         if (isEmulator) {
-            strEmulator = "\u274E Emulator: Emulator Detected";
+            strEmulator = "\u274E <b><tt>Emulator</tt></b>: <font color=\"#FF4444\">Emulator Detected</font>";
         } else {
-            strEmulator = "\u2705 Emulator: Not in Emulator Environment";
+            strEmulator = "\u2705 <b><tt>Emulator</tt></b>: <font color=\"#99CC00\">Not in Emulator Environment</font>";
         }
-        textView.setText(strRoot + "\n" + strXposed + "\n" + strEmulator);
+        txtRoot.setText(Html.fromHtml(strRoot));
+        txtXposed.setText(Html.fromHtml(strXposed));
+        txtEmulator.setText(Html.fromHtml(strEmulator));
+
+        TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
+        if (isRoot || isXposed || isEmulator) {
+            txtStatus.setText(Html.fromHtml("<font color=\"#FF4444\">Failed!</font>"));
+        } else {
+            txtStatus.setText(Html.fromHtml("<font color=\"#99CC00\">Passed!</font>"));
+        }
     }
 }
