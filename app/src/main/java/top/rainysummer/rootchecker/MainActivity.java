@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isEmulator = EasyProtectorLib.checkIsRunningInEmulator(this, emulatorInfo -> {
         });
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        ImageView imageView = findViewById(R.id.imageView);
 
         if (isRoot) {
             imageView.setImageResource(R.drawable.seele);
@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
             imageView.setImageResource(R.drawable.yes);
         }
 
-        TextView txtRoot = (TextView) findViewById(R.id.txtRoot);
-        TextView txtXposed = (TextView) findViewById(R.id.txtXposed);
-        TextView txtEmulator = (TextView) findViewById(R.id.txtEmulator);
+        TextView txtRoot = findViewById(R.id.txtRoot);
+        TextView txtXposed = findViewById(R.id.txtXposed);
+        TextView txtEmulator = findViewById(R.id.txtEmulator);
         String strRoot, strXposed, strEmulator;
         if (isRoot) {
             strRoot = "\u274E <b><tt>Root</tt></b>: <font color=\"#FF4444\">Rooted</font>";
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         txtXposed.setText(Html.fromHtml(strXposed));
         txtEmulator.setText(Html.fromHtml(strEmulator));
 
-        TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
+        TextView txtStatus = findViewById(R.id.txtStatus);
         if (isRoot || isXposed || isEmulator) {
             txtStatus.setText(Html.fromHtml("<font color=\"#FF4444\">Failed!</font>"));
         } else {
