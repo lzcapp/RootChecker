@@ -10,8 +10,8 @@ android {
         applicationId "top.rainysummer.rootchecker"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.4"
+        versionCode 4
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

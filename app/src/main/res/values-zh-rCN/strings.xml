@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Root检测</string>
+    <string name="EmulatorY">检测到模拟器</string>
+    <string name="EmulatorN">不是模拟器</string>
+    <string name="RootY">已Root</string>
+    <string name="RootN">未Root</string>
+    <string name="XposedY">检测到Xposed框架</string>
+    <string name="XposedN">未检测到Xposed框架</string>
+</resources>
