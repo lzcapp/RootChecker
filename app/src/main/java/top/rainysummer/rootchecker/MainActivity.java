@@ -10,12 +10,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.lahm.library.EasyProtectorLib;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static ArrayList<String> executeCommand(String[] shellCmd) {
+        String line;
+        ArrayList<String> fullResponse = new ArrayList<>();
+        Process localProcess;
+        try {
+            localProcess = Runtime.getRuntime().exec(shellCmd);
+        } catch (Exception e) {
+            return null;
+        }
+        BufferedReader in = new BufferedReader(new InputStreamReader(localProcess.getInputStream()));
+        try {
+            while ((line = in.readLine()) != null) {
+                fullResponse.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fullResponse;
+    }
+
+    public static String whichSU() {
+        ArrayList<String> execResult = executeCommand(new String[]{"which", "su"});
+        if (execResult != null) {
+            return execResult.get(0);
+        } else {
+            return null;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,41 +108,10 @@ public class MainActivity extends AppCompatActivity {
         TextView txtStatus = findViewById(R.id.txtStatus);
 
 
-
         if (isRoot || isXposed || isEmulator) {
             txtStatus.setText(Html.fromHtml("<font color=\"#FF4444\">Failed!</font>"));
         } else {
             txtStatus.setText(Html.fromHtml("<font color=\"#99CC00\">Passed!</font>"));
-        }
-    }
-
-    public static ArrayList<String> executeCommand(String[] shellCmd){
-        String line;
-        ArrayList<String> fullResponse = new ArrayList<>();
-        Process localProcess;
-        try {
-            localProcess = Runtime.getRuntime().exec(shellCmd);
-        } catch (Exception e) {
-            return null;
-        }
-        BufferedReader in = new BufferedReader(new InputStreamReader(localProcess.getInputStream()));
-        try {
-            while ((line = in.readLine()) != null) {
-                fullResponse.add(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fullResponse;
-    }
-
-    public static String whichSU() {
-        String[] strCmd = new String[] {"/system/xbin/which","su"};
-        ArrayList<String> execResult = executeCommand(strCmd);
-        if (execResult != null){
-            return execResult.get(0);
-        }else{
-            return null;
         }
     }
 }
