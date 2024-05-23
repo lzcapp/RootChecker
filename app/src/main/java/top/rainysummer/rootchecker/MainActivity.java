@@ -1,5 +1,6 @@
 package top.rainysummer.rootchecker;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.ImageView;
@@ -7,14 +8,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.lahm.library.EasyProtectorLib;
+import com.scottyab.rootbeer.RootBeer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
     public static ArrayList<String> executeCommand(String[] shellCmd) {
         String line;
         ArrayList<String> fullResponse = new ArrayList<>();
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String whichSU() {
         ArrayList<String> execResult = executeCommand(new String[]{"which", "su"});
-        if (execResult != null) {
+        if (execResult != null && !execResult.isEmpty()) {
             return execResult.get(0);
         } else {
             return null;
@@ -49,21 +49,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        boolean isRoot = EasyProtectorLib.checkIsRoot();
-        boolean isXposed = EasyProtectorLib.checkIsXposedExist();
-        boolean isEmulator = EasyProtectorLib.checkIsRunningInEmulator(this, emulatorInfo -> {
-        });
+        RootBeer rootBeer = new RootBeer(this);
+        boolean isRoot = rootBeer.isRooted();
+        boolean isRootedWithBusyBox = rootBeer.isRootedWithBusyBoxCheck();
 
         ImageView imageView = findViewById(R.id.imageView);
 
-        if (isRoot) {
+        if (isRoot || isRootedWithBusyBox) {
             imageView.setImageResource(R.drawable.seele);
-        } else if (isXposed) {
-            imageView.setImageResource(R.drawable.ex);
-        } else if (isEmulator) {
-            imageView.setImageResource(R.drawable.phone);
-        } else {
-            imageView.setImageResource(R.drawable.yes);
         }
 
         TextView txtRoot = findViewById(R.id.txtRoot);
@@ -73,45 +66,33 @@ public class MainActivity extends AppCompatActivity {
         TextView txtEmulator = findViewById(R.id.txtEmulator);
         TextView txtEmulator2 = findViewById(R.id.txtEmulator2);
         String strRoot, strRoot2, strXposed, strXposed2, strEmulator, strEmulator2, strSu;
-        if (isRoot) {
-            strRoot = "\u274E <b><tt>Root</tt></b>: ";
+        if (isRoot || isRootedWithBusyBox) {
+            strRoot = "❎ <b><tt>Root</tt></b>: ";
             strRoot2 = "<font color=\"#FF4444\">" + getResources().getText(R.string.RootY) + "</font>";
         } else {
-            strRoot = "\u2705 <b><tt>Root</tt></b>: ";
+            strRoot = "✅ <b><tt>Root</tt></b>: ";
             strRoot2 = "<font color=\"#99CC00\">" + getResources().getText(R.string.RootN) + "</font>";
         }
-        if (isXposed) {
-            strXposed = "\u274E <b><tt>Xposed</tt></b>: ";
-            strXposed2 = "<font color=\"#FF4444\">" + getResources().getText(R.string.XposedY) + "</font>";
-        } else {
-            strXposed = "\u2705 <b><tt>Xposed</tt></b>: ";
-            strXposed2 = "<font color=\"#99CC00\">" + getResources().getText(R.string.XposedN) + "</font>";
-        }
-        if (isEmulator) {
-            strEmulator = "\u274E <b><tt>Emulator</tt></b>: ";
-            strEmulator2 = "<font color=\"#FF4444\">" + getResources().getText(R.string.EmulatorY) + "</font>";
-        } else {
-            strEmulator = "\u2705 <b><tt>Emulator</tt></b>: ";
-            strEmulator2 = "<font color=\"#99CC00\">" + getResources().getText(R.string.EmulatorN) + "</font>";
-        }
-        if (isRoot) {
+        if (isRoot || isRootedWithBusyBox) {
             strSu = whichSU();
-            strRoot2 += " (" + strSu + ")";
+            if (strSu != null) {
+                strRoot2 += " (" + strSu + ")";
+            } else {
+                strRoot2 += "";
+            }
         }
         txtRoot.setText(Html.fromHtml(strRoot));
         txtRoot2.setText(Html.fromHtml(strRoot2));
-        txtXposed.setText(Html.fromHtml(strXposed));
-        txtXposed2.setText(Html.fromHtml(strXposed2));
-        txtEmulator.setText(Html.fromHtml(strEmulator));
-        txtEmulator2.setText(Html.fromHtml(strEmulator2));
 
         TextView txtStatus = findViewById(R.id.txtStatus);
 
 
-        if (isRoot || isXposed || isEmulator) {
-            txtStatus.setText(Html.fromHtml("<font color=\"#FF4444\">Failed!</font>"));
+        if (isRoot || isRootedWithBusyBox) {
+            txtStatus.setText("FAILED!");
+            txtStatus.setTextColor(Color.parseColor("#FF4444"));
         } else {
-            txtStatus.setText(Html.fromHtml("<font color=\"#99CC00\">Passed!</font>"));
+            txtStatus.setText("PASSED!");
+            txtStatus.setTextColor(Color.parseColor("#99CC00"));
         }
     }
 }
