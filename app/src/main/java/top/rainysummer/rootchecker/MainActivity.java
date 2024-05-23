@@ -53,19 +53,13 @@ public class MainActivity extends AppCompatActivity {
         boolean isRoot = rootBeer.isRooted();
         boolean isRootedWithBusyBox = rootBeer.isRootedWithBusyBoxCheck();
 
+        TextView txtStatus = findViewById(R.id.txtStatus);
         ImageView imageView = findViewById(R.id.imageView);
-
-        if (isRoot || isRootedWithBusyBox) {
-            imageView.setImageResource(R.drawable.seele);
-        }
-
         TextView txtRoot = findViewById(R.id.txtRoot);
         TextView txtRoot2 = findViewById(R.id.txtRoot2);
-        TextView txtXposed = findViewById(R.id.txtXposed);
-        TextView txtXposed2 = findViewById(R.id.txtXposed2);
-        TextView txtEmulator = findViewById(R.id.txtEmulator);
-        TextView txtEmulator2 = findViewById(R.id.txtEmulator2);
-        String strRoot, strRoot2, strXposed, strXposed2, strEmulator, strEmulator2, strSu;
+
+        String strRoot, strRoot2, strSu;
+
         if (isRoot || isRootedWithBusyBox) {
             strRoot = "❎ <b><tt>Root</tt></b>: ";
             strRoot2 = "<font color=\"#FF4444\">" + getResources().getText(R.string.RootY) + "</font>";
@@ -80,19 +74,15 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 strRoot2 += "";
             }
-        }
-        txtRoot.setText(Html.fromHtml(strRoot));
-        txtRoot2.setText(Html.fromHtml(strRoot2));
-
-        TextView txtStatus = findViewById(R.id.txtStatus);
-
-
-        if (isRoot || isRootedWithBusyBox) {
+            imageView.setImageResource(R.drawable.seele);
             txtStatus.setText("FAILED!");
             txtStatus.setTextColor(Color.parseColor("#FF4444"));
         } else {
+            imageView.setImageResource(R.drawable.yes);
             txtStatus.setText("PASSED!");
             txtStatus.setTextColor(Color.parseColor("#99CC00"));
         }
+        txtRoot.setText(Html.fromHtml(strRoot));
+        txtRoot2.setText(Html.fromHtml(strRoot2));
     }
 }
