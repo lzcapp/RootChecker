@@ -1,4 +1,4 @@
-package top.rainysummer.rootchecker;
+package com.seeleo.rootchecker;
 
 import android.graphics.Color;
 import android.os.Bundle;
